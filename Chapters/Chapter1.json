@@ -1,0 +1,73 @@
+{
+  "commands": [
+    {
+      "type": "text",
+      "text": "找我有什么事情？ \n",
+      "color": 7,
+      "speed": 50,
+      "wait": true
+    },
+    {
+      "type": "text",
+      "text": "你是Nall么 \n",
+      "color": 13,
+      "speed": 40,
+      "wait": true
+    },
+    {
+      "type": "option",
+      "choices": [
+        {
+          "text": "我是Nall",
+          "target": "nall_branch"
+        },
+        {
+          "text": "我不是Nall",
+          "target": "other_branch"
+        }
+      ]
+    },
+    {
+      "type": "label",
+      "name": "nall_branch"
+    },
+    {
+      "type": "text",
+      "text": "\n太好啦！ 我终于找到你了 \n",
+      "color": 10,
+      "speed": 50,
+      "wait": true
+    },
+    {
+      "type": "call",
+      "function": "playMiniGame"
+    },
+    {
+      "type": "setflag",
+      "flag": "metNall",
+      "value": 1
+    },
+    {
+      "type": "jump",
+      "target": "end"
+    },
+    {
+      "type": "label",
+      "name": "other_branch"
+    },
+    {
+      "type": "text",
+      "text": "好吧 我认错了 \n",
+      "color": 8,
+      "speed": 50,
+      "wait": true
+    },
+    {
+      "type": "label",
+      "name": "end"
+    },
+    {
+      "type": "end"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+# Visual Studio 临时文件
+.vs/
+bin-int/
+bin/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# 音效文件夹 [忽略所有sounds文件夹，无论它在哪]
+Sounds/
