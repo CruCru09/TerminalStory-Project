@@ -40,7 +40,7 @@
     },
     {
       "type": "call",
-      "function": "playMiniGame"
+      "function": "playBaseball"
     },
     {
       "type": "setflag",

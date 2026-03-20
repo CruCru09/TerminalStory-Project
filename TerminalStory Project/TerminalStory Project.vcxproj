@@ -147,6 +147,7 @@
     <ClInclude Include="src\Function\GameState.h" />
     <ClInclude Include="src\Function\GameTypeText.h" />
     <ClInclude Include="src\Function\Menu.h" />
+    <ClInclude Include="src\Function\MiniGame.h" />
     <ClInclude Include="src\SaveSys\SavaSystem.h" />
     <ClInclude Include="src\TsCore\Command.h" />
     <ClInclude Include="src\TsCore\JsonEngine.h" />
@@ -156,6 +157,7 @@
     <ClCompile Include="src\Function\GameFunction.cpp" />
     <ClCompile Include="src\Function\GameTypeText.cpp" />
     <ClCompile Include="src\Function\Menu.cpp" />
+    <ClCompile Include="src\Function\MiniGame.cpp" />
     <ClCompile Include="src\SaveSys\SaveSystem.cpp" />
     <ClCompile Include="src\TsCore\Command.cpp" />
     <ClCompile Include="src\TsCore\JsonEngine.cpp" />

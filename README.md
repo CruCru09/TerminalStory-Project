@@ -1,5 +1,7 @@
 # TerminalStory Project
 
+>有使用到AI辅助代码.
+
 "终端物语" 基于 C++ 语言编写的控制台文字互动游戏，采用经典的选项驱动叙事，另外同时还具有内置的一些小游戏提供玩家娱乐和一定的解密元素。
 
 剧情也不知道写什么，如果有一定的期望，可能会制作出来完整可游玩的文字互动游戏。
@@ -17,6 +19,16 @@
 - UTF - 8(无签证) 编码
 - TerminalStory [exe] 程序
 - TerminalCore  [dll] 动态库
+
+## TerminalStory Project.exe
+
+### 快捷键:
+
+	F5 - 保存存档
+
+	F8 - 调试Json变量
+
+	Enter - 确定
 
 ## 文件内容
 

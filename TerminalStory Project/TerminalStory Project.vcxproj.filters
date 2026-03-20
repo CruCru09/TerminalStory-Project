@@ -36,6 +36,7 @@
     <ClInclude Include="src\TsCore\Scene.h">
       <Filter>TsCore</Filter>
     </ClInclude>
+    <ClInclude Include="src\Function\MiniGame.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Function\GameFunction.cpp">
@@ -60,5 +61,6 @@
       <Filter>TsCore</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Function\MiniGame.cpp" />
   </ItemGroup>
 </Project>

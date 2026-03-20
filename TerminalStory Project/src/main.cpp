@@ -2,6 +2,7 @@
 
 #include "../../TerminalCore/src/Core/TerminalCore.h"
 #include "Function/GameFunction.h"
+#include "Function/MiniGame.h"
 
 // 获取当前exe文件所在的目录
 std::string getExeDirectory() {
@@ -17,6 +18,12 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);   // 设置控制台输出编码 UTF-8
 
     GameFunction GameObj;
+
+    // 注册函数
+    g_JSengine.registerFunction("playBaseball", playBaseballGame);
+    g_JSengine.registerFunction("playGuessNumber", playGuessNumberGame);
+    g_JSengine.registerFunction("playMemory", playMemoryGame);
+    g_JSengine.registerFunction("playTyping", playTypingGame);
 
     // 将exe目录与其他文件夹拼接
     std::string exeDir = getExeDirectory();

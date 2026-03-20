@@ -28,6 +28,9 @@ public:
     // 保存当前游戏[触发存档界面]
     void saveCurrent();
 
+    // 调试打印标志
+    void debugPrintFlags();
+
 private:
     std::map<std::string, std::unique_ptr<Scene>> scenes;
     std::map<std::string, std::function<void()>> functions;
@@ -36,4 +39,5 @@ private:
     void executeCommand(Command* cmd);
     int showOptions(const std::vector<OptionCommand::Choice>& choices);
     void jumpToLabel(const std::string& label);
+    bool checkCondition(const std::string& cond, const GameState& state);
 };

@@ -15,6 +15,11 @@
 #include <vector>
 #include <memory>
 #include <stdexcept>
+#include <cstdlib>
+#include <ctime>
+#include <optional>
+#include <regex>
+#include <iomanip>
 
 #include "Core/Core.h"
 #include "Core/json.hpp"
