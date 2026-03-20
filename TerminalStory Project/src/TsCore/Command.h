@@ -33,6 +33,7 @@ struct OptionCommand : Command {
     struct Choice {
         std::string text;
         std::string targetLabel;
+        std::optional<std::string> targetScene;
         std::optional<std::string> condition; // 每个选项也可以有条件
     };
     std::vector<Choice> choices;
@@ -48,6 +49,7 @@ struct CallCommand : Command {
 struct JumpCommand : Command {
     CommandType type() const override { return CommandType::Jump; }
     std::string targetLabel;
+    std::optional<std::string> targetScene;
 };
 
 // 设置变量指令

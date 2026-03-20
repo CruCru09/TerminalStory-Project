@@ -38,6 +38,6 @@ private:
 
     void executeCommand(Command* cmd);
     int showOptions(const std::vector<OptionCommand::Choice>& choices);
-    void jumpToLabel(const std::string& label);
+    void jumpToLabel(const std::string& label, const std::optional<std::string>& scene);
     bool checkCondition(const std::string& cond, const GameState& state);
 };

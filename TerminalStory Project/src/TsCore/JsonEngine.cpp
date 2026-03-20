@@ -37,16 +37,19 @@ void JsonEngine::registerFunction(const std::string& name, std::function<void()>
 
 // 运行场景
 void JsonEngine::runScene(const std::string& sceneId, size_t startIndex) {
-    auto it = scenes.find(sceneId);
-    if (it == scenes.end()) {
-        std::cerr << "场景不存在: " << sceneId << std::endl;
-        return;
-    }
-    Scene* scene = it->second.get();
     currentState.sceneId = sceneId;
     currentState.commandIndex = startIndex;
 
-    while (currentState.commandIndex < scene->commands.size()) {
+    while (true) {
+        auto it = scenes.find(currentState.sceneId);
+        if (it == scenes.end()) {
+            std::cerr << "场景不存在: " << currentState.sceneId << std::endl;
+            break;
+        }
+        Scene* scene = it->second.get();
+        if (currentState.commandIndex >= scene->commands.size()) {
+            break; // 场景结束
+        }
         Command* cmd = scene->commands[currentState.commandIndex].get();
         executeCommand(cmd);
     }
@@ -75,7 +78,8 @@ void JsonEngine::executeCommand(Command* cmd) {
         auto o = static_cast<OptionCommand*>(cmd);
         int choice = showOptions(o->choices);
         if (choice >= 0) {
-            jumpToLabel(o->choices[choice].targetLabel);
+            const auto& chosen = o->choices[choice];
+            jumpToLabel(chosen.targetLabel, chosen.targetScene);
         }
         else {
             // 没有可用选项 跳过当前指令
@@ -90,14 +94,14 @@ void JsonEngine::executeCommand(Command* cmd) {
             fit->second();
         }
         else {
-            std::cerr << "错误：未注册的函数: " << c->funcName << std::endl;
+            std::cerr << "未注册的函数: " << c->funcName << std::endl;
         }
         currentState.commandIndex++;
         break;
     }
     case CommandType::Jump: {
         auto j = static_cast<JumpCommand*>(cmd);
-        jumpToLabel(j->targetLabel);
+        jumpToLabel(j->targetLabel, j->targetScene);
         break;
     }
     case CommandType::SetFlag: {
@@ -166,17 +170,23 @@ int JsonEngine::showOptions(const std::vector<OptionCommand::Choice>& choices) {
 
 
 // 跳转到标签
-void JsonEngine::jumpToLabel(const std::string& label) {
-    auto it = scenes.find(currentState.sceneId);
-    if (it == scenes.end()) return;
-    Scene* scene = it->second.get();
-    auto lit = scene->labelToIndex.find(label);
-    if (lit != scene->labelToIndex.end()) {
+void JsonEngine::jumpToLabel(const std::string& label, const std::optional<std::string>& scene) {
+    std::string targetSceneId = scene.value_or(currentState.sceneId);
+    auto it = scenes.find(targetSceneId);
+    if (it == scenes.end()) {
+        std::cerr << "场景不存在: " << targetSceneId << std::endl;
+        currentState.commandIndex++; // 跳过当前指令
+        return;
+    }
+    Scene* targetScene = it->second.get();
+    auto lit = targetScene->labelToIndex.find(label);
+    if (lit != targetScene->labelToIndex.end()) {
+        currentState.sceneId = targetSceneId;   // 切换场景
         currentState.commandIndex = lit->second;
     }
     else {
-        std::cerr << "标签不存在: " << label << std::endl;
-        currentState.commandIndex++; // 找不到标签 跳过当前指令
+        std::cerr << "标签不存在: " << label << " 在场景 " << targetSceneId << std::endl;
+        currentState.commandIndex++;
     }
 }
 

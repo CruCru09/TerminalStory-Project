@@ -38,39 +38,58 @@ bool Scene::loadFromJson(const nlohmann::json& j) {
             if (item.contains("wait")) t->waitAtEnd = item["wait"];
             cmd = std::move(t);
         }
+
         else if (type == "option") {
-            auto o = std::make_unique<OptionCommand>();
+            auto cmd = std::make_unique<OptionCommand>();
             for (const auto& ch : item["choices"]) {
                 OptionCommand::Choice choice;
                 choice.text = ch["text"];
                 choice.targetLabel = ch["target"];
-                // 选项自身条件
-                if (ch.contains("condition") && ch["condition"].is_string() && !ch["condition"].get<std::string>().empty()) {
+                if (ch.contains("scene") && ch["scene"].is_string()) {
+                    choice.targetScene = ch["scene"].get<std::string>();
+                }
+                if (ch.contains("condition") && ch["condition"].is_string()) {
                     choice.condition = ch["condition"].get<std::string>();
                 }
-                o->choices.push_back(choice);
+                cmd->choices.push_back(choice);
             }
-            cmd = std::move(o);
+            // 读取指令自身的条件（可选）
+            if (item.contains("condition") && item["condition"].is_string()) {
+                cmd->condition = item["condition"].get<std::string>();
+            }
+            commands.push_back(std::move(cmd));
         }
+
         else if (type == "call") {
             auto c = std::make_unique<CallCommand>();
             c->funcName = item["function"];
             cmd = std::move(c);
         }
+
         else if (type == "jump") {
-            auto jmp = std::make_unique<JumpCommand>();
-            jmp->targetLabel = item["target"];
-            cmd = std::move(jmp);
+            auto cmd = std::make_unique<JumpCommand>();
+            cmd->targetLabel = item["target"];
+            if (item.contains("scene") && item["scene"].is_string()) {
+                cmd->targetScene = item["scene"].get<std::string>();
+            }
+            // 读取通用条件[如果有]
+            if (item.contains("condition") && item["condition"].is_string()) {
+                cmd->condition = item["condition"].get<std::string>();
+            }
+            commands.push_back(std::move(cmd));
         }
+
         else if (type == "setflag") {
             auto s = std::make_unique<SetFlagCommand>();
             s->flagName = item["flag"];
             s->value = item["value"];
             cmd = std::move(s);
         }
+
         else if (type == "end") {
             cmd = std::make_unique<EndCommand>();
         }
+
         else {
             // 未知类型 抛出异常
             throw std::runtime_error("Unknown command type: " + type);
